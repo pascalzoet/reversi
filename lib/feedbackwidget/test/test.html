@@ -1,0 +1,57 @@
+<html>
+<head>
+<link rel="shortcut icon" type="image/png" href="../lib/jasmine/lib/jasmine/jasmine_favicon.png">
+<link rel="stylesheet" type="text/css" href="../lib/jasmine/lib/jasmine/jasmine.css">
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="../lib/jasmine/lib/jasmine/jasmine.js"></script>
+<script type="text/javascript" src="../lib/jasmine/lib/jasmine/jasmine-html.js"></script>
+<script type="text/javascript" src="../lib/jasmine/lib/jasmine/boot.js"></script>
+<script src="../src/js/widget.js"></script>
+</head>
+<body>
+
+<script>
+
+describe("feedbackwidget", function() {
+  it("expect red color", function() {
+    let widget = new Widget("My message", "body", "warning");
+    widget.SetType();
+    expect(widget.color).toBe("#f2dede");
+  });
+
+  it("expect element to be body", function () {
+    let widget = new Widget("My message", "body", "warning");
+    widget.SetType();
+    expect(widget.element).toBe("body");
+  });
+
+  it("expect to see 1 item in storage", function () {
+    localStorage.clear();
+    let widget = new Widget("My message", "body", "warning");
+    widget.LogToStorage();
+    let storage = JSON.parse(localStorage.getItem("logs"));
+    expect(storage.length).toBe(1);
+  });
+
+  it("expect to see My message in storage", function () {
+    localStorage.clear();
+    let widget = new Widget("My message", "body", "warning");
+    widget.LogToStorage();
+    let storage = JSON.parse(localStorage.getItem("logs"));
+    expect(storage[0]).toBe("My message");
+  });
+
+  it("expect to see only 10 elements in storage", function () {
+    localStorage.clear();
+    let widget = new Widget("My message", "body", "warning");
+    for (i = 0; i < 22; i++) {
+        widget.LogToStorage();
+    }
+    let storage = JSON.parse(localStorage.getItem("logs"));
+    expect(storage.length).toBe(10);
+  });
+});
+
+</script>
+</body>
+</html>
