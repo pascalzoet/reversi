@@ -1,13 +1,33 @@
 Reversi.model = (function () {
-    let token = "SayjOq2ZwU6ZbiCwO78I0Q==";
-    let init = function () {
+    let configmap = {
+        gametoken: null,
+        turnUrl : null,
+        env : "production"
+    }
+
+
+    let init = function (gametoken, env) {
+        var url = window.location.href.toString(),
+        access_token = url.match(/\#(?:access_token)\=([\S\s]*?)\&/)[1];
+        configmap.env = env;
+        configmap.gametoken = access_token;
         return PollBoard();
     };
 
     let PollBoard = function () {
+        if (configmap.env == "development") {
+            return new Promise(function (resolve, reject) {
+                resolve( {
+                    name: "load_board",
+                    response: response
+                })
+            })
+        } else {
+
+        }
         return new Promise(function (resolve, reject) {
             $.ajax({
-                url: "https://localhost:44375/api/game/"+token,
+                url: "https://localhost:44375/api/game/"+configmap.gametoken,
                 method: "GET",
                 success: function (response) {
                     resolve( {
@@ -34,7 +54,7 @@ Reversi.model = (function () {
                 contentType: "application/json; charset=utf-8",
                 data : JSON.stringify({
                     "moveX" : row, "moveY" : col,
-                    "GameToken": token.toString()
+                    "GameToken": configmap.gametoken.toString()
                 }),
                 success: function (response) {
                     console.log(response);

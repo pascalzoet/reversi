@@ -42,6 +42,8 @@ const Reversi = (function () {
 				let stone = document.createElement("span");
 
 				stone.classList.add("stone");
+				stone.classList.add("animate");
+
 				var checkState = grid[row][col];
 				let state;
 				switch (checkState) {
@@ -63,6 +65,7 @@ const Reversi = (function () {
 				grid[row][col] = initItemState(stone, state);
 
 				//bind the element to the grid
+				stone.classList.toggle("animate");
 
 				bindMove(td, row, col);
 			}
@@ -76,12 +79,12 @@ const Reversi = (function () {
 		{ 
 			Reversi.model.poll().then(result => {
 				grid = JSON.parse(result['response']['board'])
-				turn = JSON.parse(result["response"]["onSet"])
+				turn = result["response"]["onSet"]
 			}).then(function () {
 				prepareBoard();
 			});
 		}
-		, 1000);
+		, 1500);
 	}
 
 	let initItemState = function(elem, state) {
