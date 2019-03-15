@@ -22,6 +22,9 @@ gulp.task('sass', function () {
 
 
 const files_js_order = [
+    'src/js/spa.js',
+    'src/js/data.js',
+    'src/js/model.js',
     'src/js/reversi.js',
     'src/js/**/*.js'
 ];
@@ -46,6 +49,11 @@ const vendorcss = function () {
 const vendorjs = function () {
     return gulp.src(vendor_files_js)
     .pipe(concat('vendor.js'))
+    .pipe(babel({
+        presets: ['@babel/preset-env']
+    }))
+    .pipe(uglify())
+    .pipe(minify())
     .pipe(gulp.dest('./dist/js'));
 }
 
@@ -77,8 +85,8 @@ const js = function () {
     .pipe(babel({
         presets: ['@babel/preset-env']
     }))
-    .pipe(uglify())
-    .pipe(minify())
+    // .pipe(uglify())
+    // .pipe(minify())
     .pipe(gulp.dest('./dist/js'));
 }
 
