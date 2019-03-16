@@ -24,14 +24,26 @@ Spa.Model = (function () {
                 var widget = new Widget(result["response"]["description"], "#widgetPlace", "warning");
                 widget.Load();
             } else {
+                let data = JSON.parse(result['response']['data']);
+                SetWhoIs(data["OnSet"])
                 Spa.Reversi.buildgame(result["response"]["data"]);
                 
             }
         }).then(function () {
-            setInterval(() => {
+            let poll = setInterval(() => {
                 Spa.Data.loadgame().then(result => {
-                    let NewGrid = JSON.parse(JSON.parse(result['response']['data'])['Board']);
-                    Spa.Reversi.update(NewGrid);
+                    if(result["response"]["status"] == "error") {
+                        let widget = new Widget(result["response"]["description"], "#widgetPlace", "warning");
+                        widget.Load();
+                        if (data['GameStatus'] == "finished") {
+                            clearInterval(poll)
+                        }
+                    } else {
+                        let data = JSON.parse(result['response']['data']);
+                        let NewGrid = JSON.parse(data['Board']);
+                        Spa.Reversi.update(NewGrid);
+                        SetWhoIs(data["OnSet"])
+                    }
                 });
             }, 1500)
         })
@@ -39,9 +51,29 @@ Spa.Model = (function () {
 
     let RequestMove = function (row, col) {
         Spa.Data.move(row, col).then(function (result) {
-            let NewGrid = JSON.parse(JSON.parse(result['response']['data'])['Board']);
-            Spa.Reversi.update(NewGrid)
+            if(result["response"]["status"] == "error") {
+                var widget = new Widget(result["response"]["description"], "#widgetPlace", "warning");
+                widget.Load();
+            } else {
+                let NewGrid = JSON.parse(JSON.parse(result['response']['data'])['Board']);
+                Spa.Reversi.update(NewGrid)
+                var widget = new Widget("steen gezet, wacht op tegenstander", "#widgetPlace");
+                widget.Load();
+            }
         });
+    }
+
+    let SetWhoIs = function (onset) {
+        if (onset == 1) {
+            $(".stone-block-white").show();
+            $(".stone-block-white").toggleClass("rotate");
+            $(".stone-block-black").hide();
+        } else {
+            $(".stone-block-black").toggleClass("rotate");
+            $(".stone-block-white").hide();
+            $(".stone-block-black").show();
+
+        }
     }
 
     return {

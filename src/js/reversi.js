@@ -78,6 +78,8 @@ Spa.Reversi = (function () {
 						break;
 					case 1:
 						state = states.white;
+						stone.classList.add("white");
+
 						break;
 					case 2:
 						stone.classList.add("black");
@@ -107,9 +109,12 @@ Spa.Reversi = (function () {
 					if (NewGrid[row][col] == 1) {
 						CurrentGrid[row][col].state = states.white;
 						CurrentGrid[row][col].elem.classList.remove("black");
+						CurrentGrid[row][col].elem.classList.add("white");
 					} else if (NewGrid[row][col] == 2) {
 						CurrentGrid[row][col].state = states.black;
 						CurrentGrid[row][col].elem.classList.add("black");
+						CurrentGrid[row][col].elem.classList.remove("white");
+
 					}
 				}
 			}
