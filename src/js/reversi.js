@@ -14,41 +14,6 @@ Spa.Reversi = (function () {
 	let init = function (grid) {
 		CurrentGrid = JSON.parse(JSON.parse(grid)["Board"]);
 		prepareBoard();
-		//check if both players are here
-		// //call the api to check if the server is available
-		// Reversi.model.init().then(result => {
-		// 	//based on the given result
-		// 	CurrentGrid = JSON.parse(result["response"]['board']);
-		// 	whois(result["response"]["onSet"]);
-		// 	switch (result['response']['gameStatus']) {
-		// 		case "waiting":
-		// 			//waiting for second player
-		// 			break;
-		// 		case "inprogress":
-		// 			//game has started
-		// 			config.started = true;
-		// 			break;
-		// 		case "finished":
-		// 			config.finished = true;
-		// 			break;
-		// 			//game has finished
-		// 	}
-		// }).then(function() {
-		// 	prepareBoard();
-		// })
-		// .then(function () {
-		// 	if (config.finished == true) {
-		// 		//game is over
-		// 	} else if(config.started == false) {
-		// 		//game has not started, poll the game states for our second teammate
-		// 		var widget = new Widget("wachten op tegenstander", "#widgetPlace", 'warning');
-		// 		widget.Load();
-		// 		PollOponentStatus();
-		// 	} else {
-		// 		//game is in progress, keep updating
-		// 		PollForGameUpdate();
-		// 	}
-		// })
 	}
 
 	let prepareBoard = function () {
@@ -108,10 +73,12 @@ Spa.Reversi = (function () {
 					CurrentGrid[row][col].elem.style.visibility = "visible";
 					if (NewGrid[row][col] == 1) {
 						CurrentGrid[row][col].state = states.white;
+						CurrentGrid[row][col].elem.classList.add('animate-white')
 						CurrentGrid[row][col].elem.classList.remove("black");
 						CurrentGrid[row][col].elem.classList.add("white");
 					} else if (NewGrid[row][col] == 2) {
 						CurrentGrid[row][col].state = states.black;
+						CurrentGrid[row][col].elem.classList.add('animate-black')
 						CurrentGrid[row][col].elem.classList.add("black");
 						CurrentGrid[row][col].elem.classList.remove("white");
 
@@ -121,42 +88,12 @@ Spa.Reversi = (function () {
 		}
 	};
 
-	let PollForGameUpdate = function () {
-	
-		setInterval(function()
-		{ 
-			Reversi.model.poll().then(result => {
-				NewGrid = JSON.parse(result['response']['board'])
-				whois(result["response"]["onSet"]);
-			}).then(function () {
-				updateBoard();
-			});
-		}
-		, 1500);
-	}
-
-	let PollOponentStatus = function () {
-		var widget = new Widget("tegenstander gevonden", "#widgetPlace");
-		let status = setInterval(function () {
-			 Reversi.model.polStatus().then(result => {
-				if (result['response'].gameStatus != "waiting") {
-					//start the game
-					clearInterval(status);
-					NewGrid = JSON.parse(result["response"]["board"]);
-					widget.Load();
-					PollForGameUpdate();
-				}
-			})
-		}, 1500)
-	};
-
 	let initItemState = function(elem, state) {
         return {
             'state': state,
             'elem': elem
         };
 	};
-
 
 	let bindMove = function (element, y, x) {
 		element.onclick  = function (event) {

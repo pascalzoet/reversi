@@ -44,15 +44,24 @@
 
 .black {
     background-color: black !important;
+    animation-name: animateblack;
+    animation-duration: 4s;
 }
 
 .white {
     background: #ffffff;
+    animation-name: animatewhite;
+    animation-duration: 4s;
 }
 
-.animate {
-    -webkit-transform: rotateX(-180deg);
-    transform: rotateX(-180deg);
+@keyframes animatewhite {
+    from {background-color: black;}
+    to {background-color: #ffffff;}
+}
+
+@keyframes animateblack {
+    from {background-color: #ffffff;}
+    to {background-color: black;}
 }
 
 #whois {
