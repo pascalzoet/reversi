@@ -104,11 +104,35 @@ Spa.Data = (function () {
         });
     }
 
+    let skip = function () {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/api/skip/"+configmap.gametoken.toString(),
+                method: "GET",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    resolve({
+                        name: "skip",
+                        response : response
+                    })
+                },
+                error: function (xhr, error) {
+                    reject( {
+                        name: "skip",
+                        response: error
+                    })
+                }
+            })
+        });
+    };
+
     return {
         init : init,
         GetPlayers: players,
         loadgame: GetGame,
         move : passmove,
-        stats : getstats
+        stats : getstats,
+        skip: skip
     }
 })();

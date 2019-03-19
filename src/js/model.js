@@ -9,13 +9,21 @@ Spa.Model = (function () {
 
     let load = function () {
         Spa.Data.GetPlayers().then(result => {
+            //get all the players
             if (result["response"]["status"] == "error") {
                 var widget = new Widget(result["response"]["description"], "#widgetPlace", "warning");
                 widget.Load();
+            } else {
+                var widget = new Widget(result["response"]["description"], "#widgetPlace");
+                widget.Load();
+                $(".you-are > span").html("Jij bent "+ result["response"]["data"])
             }
         }).then(function () {
+            //request the game status
            return Spa.Data.loadgame()
         }).then(result => {
+
+            //build the game
             if (result["response"]["status"] == "error") {
                 var widget = new Widget(result["response"]["description"], "#widgetPlace", "warning");
                 widget.Load();
@@ -26,16 +34,21 @@ Spa.Model = (function () {
                 
             }
         }).then(function () {
+            //keep polling the game
             let poll = setInterval(() => {
                 Spa.Data.loadgame().then(result => {
+                    let data = JSON.parse(result['response']['data']);
+
                     if(result["response"]["status"] == "error") {
-                        let widget = new Widget(result["response"]["description"], "#widgetPlace", "warning");
+                        let widget = new Widget(result["response"]["description"], "#widgetPlace", "warning", false);
                         widget.Load();
                         if (data['GameStatus'] == "finished") {
                             clearInterval(poll)
+                            setInterval(() => {
+                                location.href = "/dashboard";
+                            }, 5000);
                         }
                     } else {
-                        let data = JSON.parse(result['response']['data']);
                         let NewGrid = JSON.parse(data['Board']);
                         Spa.Reversi.update(NewGrid);
                         SetWhoIs(data["OnSet"])
@@ -43,11 +56,15 @@ Spa.Model = (function () {
                 });
             }, 1500)
         }).then(function () {
+            //request weathers stats
            return Spa.Api.weather();
         }).then(result => {
-                $("#advertisement > .place-title").html(result["name"])
-                $("#advertisement > .temp").html(parseInt(result["main"]["temp"] - 273.15)+"&#8451;")
+            //build weather api stats
+            $("#advertisement > .place-title").html(result["name"])
+            $("#advertisement > .temp").html(parseInt(result["main"]["temp"] - 273.15)+"&#8451;")
         }).then(function () {
+
+            //get the stats for the chart
             Spa.Data.stats().then(function (result) {
                 Spa.Grafiek.init(JSON.parse(result["response"]["data"]));
                 Spa.Grafiek.toonGrafiek();

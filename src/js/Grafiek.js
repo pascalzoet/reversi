@@ -7,7 +7,6 @@ Spa.Grafiek = (function () {
     };
 
     let showGrafiek = function () {
-        console.log(jsondata);
         let ctx = document.getElementById('chart_stats').getContext('2d');
         let myChart = new Chart(ctx, {
             type: 'bar',

@@ -113,16 +113,20 @@ Spa.Reversi = (function () {
 		}
 	};
 
-	let whois = function (who) {
-		if (who == 1) {
-			document.getElementById("whois").innerHTML = "wit is aan zet";
-		} else {
-			document.getElementById("whois").innerHTML = "zwart is aan zet";
-		}
+	let skipturn = function () {
+		Spa.Data.skip().then(result => {
+			if(result["response"]["status"] == "error") {
+                var widget = new Widget(result["response"]["description"], "#widgetPlace", "warning");
+                widget.Load();
+            } else {
+				var widget = new Widget(result["response"]["description"], "#widgetPlace");
+                widget.Load();
+			}
+		});
 	}
-
 	return {
 		buildgame : init,
-		update: updateBoard
+		update: updateBoard,
+		skip: skipturn
 	};
 })();

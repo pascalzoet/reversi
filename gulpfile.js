@@ -51,8 +51,8 @@ const vendorjs = function () {
 
 const html = function () {
     return src('./src/html/**/*.html')
-     //   .pipe(dest('dist'))
-     .pipe(gulp.dest("C:/Users/pascal/source/repos/windesheim/server technology/reversi/ReversiApi/ReversiApi/wwwroot"))
+        .pipe(dest('dist'))
+     //.pipe(gulp.dest("C:/Users/pascal/source/repos/windesheim/server technology/reversi/ReversiApi/ReversiApi/wwwroot"))
 }
 
 const css = function () {
@@ -68,8 +68,7 @@ const sass_build = function () {
     return gulp.src('./src/css/**/*.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(concat('style.min.css'))
-    //.pipe(gulp.dest('./dist/css'));
-  .pipe(gulp.dest("C:/Users/pascal/source/repos/windesheim/server technology/reversi/ReversiApi/ReversiApi/wwwroot/css"))
+    .pipe(gulp.dest('./dist/css'));
 
 }
 
@@ -82,8 +81,7 @@ const js = function () {
     }))
     // .pipe(uglify())
     // .pipe(minify())
-  //  .pipe(gulp.dest('./dist/js'));
-  .pipe(gulp.dest("C:/Users/pascal/source/repos/windesheim/server technology/reversi/ReversiApi/ReversiApi/wwwroot/js"))
+   .pipe(gulp.dest('./dist/js'));
 
 }
 
@@ -105,8 +103,7 @@ gulp.task('templates', function(){
             }
         }))
         .pipe(concat('templates.js'))
-       // .pipe(gulp.dest('dist/js/'))
-       .pipe(gulp.dest("C:/Users/pascalsourcereposwindesheimserver technologyreversiReversiApiReversiApiwwwroot"))
+       .pipe(gulp.dest('dist/js/'))
 });
 
 

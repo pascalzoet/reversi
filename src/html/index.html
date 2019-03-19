@@ -14,19 +14,36 @@
 	<link rel="stylesheet" href="css/style.min.css">
 </head>
 <body>
-	<div id="widgetPlace"></div>
-
-	<div id="whois"></div>
-
+	<div id="toprow">
+		<div id="widgetPlace"></div>
+		<div id="whois">
+			<div class="stone-block-white">
+				<span class="stone white"></span>
+			</div>
+			<div class="stone-block-black">
+				<span class="stone black"></span>
+			</div>
+			<div class="stone-type">
+				<span>Aan zet</span>
+			</div>
+			<div class="stone-type you-are">
+				<span></span>
+			</div>
+			<div class="skip-turn">
+				<button onclick="Spa.Reversi.skip()" id="skipturn">Sla beurt over</button>
+			</div>
+		</div>
+		<div id="advertisement">
+			<div class="header">Temperatuurmeter</div>
+			<div class="place-title"></div>
+			<div class="temp"></div>
+		</div>
+	</div>
 	<div id="board"></div>
 	<div id="stats">
-		<canvas width="10" height="10" id="chart_stats"></canvas>
+		<canvas id="chart_stats"></canvas>
 	</div>
-	<div id="advertisement">
-		<div class="header">Temperatuurmeter</div>
-		<div class="place-title"></div>
-		<div class="temp"></div>
-	</div>
+	
 	<script type="text/javascript">
 		Spa.init();
 	</script>
