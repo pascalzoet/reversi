@@ -12,7 +12,7 @@ Spa.Data = (function () {
     let players = function () {
         return new Promise(function (resolve, reject) {
             $.ajax({
-                url: "https://localhost:44375/api/game/"+configmap.gametoken+"/players",
+                url: "/api/game/"+configmap.gametoken+"/players",
                 method: "GET",
                 success: function (response) {
                     resolve ({
@@ -34,7 +34,7 @@ Spa.Data = (function () {
        //check if the board exist
         return new Promise(function (resolve, reject) {
             $.ajax({
-                url: "https://localhost:44375/api/game/"+configmap.gametoken,
+                url: "/api/game/"+configmap.gametoken,
                 method: "GET",
                 success: function (response) {
                     resolve({
@@ -54,33 +54,10 @@ Spa.Data = (function () {
         })
     }
 
-    let pollGameStatus = function () {
-        return new Promise(function (resolve, reject) {
-            $.ajax({
-                url: "https://localhost:44375/api/game/"+configmap.gametoken,
-                method: "GET",
-                success: function (response) {
-                    resolve( {
-                        name: "game_state",
-                        response: response
-                    })
-                },
-                error : function (xhr, error) {
-                    var widget = new Widget(xhr.responseText, "body", 'warning');
-                    widget.Load();
-                    reject( {
-                        name: "game_state",
-                        response: error
-                    })
-                }
-            })
-        })
-    }
-
     let passmove = function (row, col) {
         return new Promise(function (resolve, reject) {
             $.ajax({
-                url: "https://localhost:44375/api/game/move",
+                url: "/api/game/move",
                 method: "PUT",
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",
@@ -104,11 +81,34 @@ Spa.Data = (function () {
         })
     }
 
+    let getstats = function () {
+        return new Promise(function (resolve, reject) {
+            $.ajax({
+                url: "/api/stats/"+configmap.gametoken.toString(),
+                method: "GET",
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    resolve({
+                        name: "stats",
+                        response : response
+                    })
+                },
+                error: function (xhr, error) {
+                    reject( {
+                        name: "stats",
+                        response: error
+                    })
+                }
+            })
+        });
+    }
+
     return {
         init : init,
         GetPlayers: players,
         loadgame: GetGame,
-        move : passmove
-
+        move : passmove,
+        stats : getstats
     }
 })();

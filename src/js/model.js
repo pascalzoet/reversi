@@ -12,10 +12,6 @@ Spa.Model = (function () {
             if (result["response"]["status"] == "error") {
                 var widget = new Widget(result["response"]["description"], "#widgetPlace", "warning");
                 widget.Load();
-            } else {
-                // var widget = new Widget(result["response"]["description"], "#widgetPlace");
-                // widget.Load();
-                
             }
         }).then(function () {
            return Spa.Data.loadgame()
@@ -46,6 +42,16 @@ Spa.Model = (function () {
                     }
                 });
             }, 1500)
+        }).then(function () {
+           return Spa.Api.weather();
+        }).then(result => {
+                $("#advertisement > .place-title").html(result["name"])
+                $("#advertisement > .temp").html(parseInt(result["main"]["temp"] - 273.15)+"&#8451;")
+        }).then(function () {
+            Spa.Data.stats().then(function (result) {
+                Spa.Grafiek.init(JSON.parse(result["response"]["data"]));
+                Spa.Grafiek.toonGrafiek();
+            });
         })
     };
 
@@ -55,8 +61,14 @@ Spa.Model = (function () {
                 var widget = new Widget(result["response"]["description"], "#widgetPlace", "warning");
                 widget.Load();
             } else {
-                let NewGrid = JSON.parse(JSON.parse(result['response']['data'])['Board']);
-                Spa.Reversi.update(NewGrid)
+                let data = JSON.parse(result['response']['data'])
+                let NewGrid = JSON.parse(result['response']["board"]);
+                Spa.Reversi.update(NewGrid, data["MoveX"], data["MoveY"])
+
+                Spa.Data.stats().then(function (result) {
+                    Spa.Grafiek.init(JSON.parse(result["response"]["data"]));
+                    Spa.Grafiek.update();
+                });
                 var widget = new Widget("steen gezet, wacht op tegenstander", "#widgetPlace");
                 widget.Load();
             }

@@ -44,14 +44,21 @@
 
 .black {
     background-color: black !important;
-    animation-name: animateblack;
-    animation-duration: 4s;
+    
 }
 
 .white {
     background: #ffffff;
+}
+
+.animate-white {
     animation-name: animatewhite;
-    animation-duration: 4s;
+    animation-duration: 2s;
+}
+
+.animate-black {
+    animation-name: animateblack;
+    animation-duration: 2s;
 }
 
 @keyframes animatewhite {
@@ -123,3 +130,40 @@
     }
 }
 
+#advertisement {
+    width: 200px;
+    position: absolute;
+    float: right;
+    border: 1px solid black;
+    right: 0;
+    top: 20px;
+    height: 20%;
+    text-align: center;
+    background-color: lightblue;
+
+    .header {
+        border-bottom: 1px solid black;
+        width: 100%;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    .place-title {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        font-size: 40px;
+    }
+
+    .temp {
+        color: green;
+        font-size: 40px;
+    }
+}
+canvas {
+   height: 300px;
+}
+
+#stats {
+    width: 800px;
+    margin: 0 auto;
+}

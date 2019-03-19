@@ -1,7 +1,9 @@
 Spa.Reversi = (function () {
 	let config = {
 		cols: 8,
-		rows: 8
+		rows: 8,
+		movex : null,
+		movey : null
 	};
 
 	let CurrentGrid;
@@ -11,7 +13,7 @@ Spa.Reversi = (function () {
         'black': { 'id' : 2, 'color': 'black' }
 	};
 
-	let init = function (grid) {
+	let init = function (grid, x, y) {
 		CurrentGrid = JSON.parse(JSON.parse(grid)["Board"]);
 		prepareBoard();
 	}
@@ -66,22 +68,32 @@ Spa.Reversi = (function () {
 		document.getElementById("board").appendChild(table);
 	};
 
-	let updateBoard = function (NewGrid) {
+	let updateBoard = function (NewGrid, setx, sety) {
 		for (let row = 0; row < config.rows; row++) {
 			for (let col = 0; col < config.cols; col++) {
 				while (CurrentGrid[row][col].state.id != NewGrid[row][col]) {
 					CurrentGrid[row][col].elem.style.visibility = "visible";
+
 					if (NewGrid[row][col] == 1) {
 						CurrentGrid[row][col].state = states.white;
-						CurrentGrid[row][col].elem.classList.add('animate-white')
 						CurrentGrid[row][col].elem.classList.remove("black");
 						CurrentGrid[row][col].elem.classList.add("white");
 					} else if (NewGrid[row][col] == 2) {
 						CurrentGrid[row][col].state = states.black;
-						CurrentGrid[row][col].elem.classList.add('animate-black')
 						CurrentGrid[row][col].elem.classList.add("black");
 						CurrentGrid[row][col].elem.classList.remove("white");
 
+					}
+
+					if (row == setx && col == sety) {
+						// do nothing
+					} else {
+						if (NewGrid[row][col] == 1) {
+							CurrentGrid[row][col].elem.classList.add('animate-white')
+
+						} else if (NewGrid[row][col] == 2) {
+							CurrentGrid[row][col].elem.classList.add('animate-black')
+						}
 					}
 				}
 			}
