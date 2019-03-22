@@ -1,7 +1,11 @@
 Spa.Template = (function () {
 
-    let init = function (template) {
+    let config = {
+        templates: null
+    };
 
+    let init = function (templates) {
+        config.templates = templates;
     };
 
     let getTemplate = function () {

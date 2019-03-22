@@ -60,8 +60,6 @@ Spa.Model = (function () {
            return Spa.Api.weather();
         }).then(result => {
             //build weather api stats
-            $("#advertisement > .place-title").html(result["name"])
-            $("#advertisement > .temp").html(parseInt(result["main"]["temp"] - 273.15)+"&#8451;")
         }).then(function () {
 
             //get the stats for the chart
@@ -93,6 +91,7 @@ Spa.Model = (function () {
     }
 
     let SetWhoIs = function (onset) {
+
         if (onset == 1) {
             $(".stone-block-white").show();
             $(".stone-block-white").toggleClass("rotate");

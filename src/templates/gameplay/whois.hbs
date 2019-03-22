@@ -1,0 +1,20 @@
+<div id="whois">
+    {{#if black}}
+    <div class="stone-block-black">
+        <span class="stone black"></span>
+    </div>
+    {{else}}
+        <div class="stone-block-white">
+        <span class="stone white"></span>
+    </div>
+    {{/if}}
+    <div class="stone-type">
+        <span>Aan zet</span>
+    </div>
+    <div class="stone-type you-are">
+        <span>{{ you }}</span>
+    </div>
+    <div class="skip-turn">
+        <button onclick="Spa.Reversi.skip()" id="skipturn">Sla beurt over</button>
+    </div>
+</div>

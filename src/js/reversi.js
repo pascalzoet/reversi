@@ -32,6 +32,9 @@ Spa.Reversi = (function () {
 
 				//create a stone
 				let stone = document.createElement("span");
+				let innerstone = document.createElement("span");
+				innerstone.classList.add("stone");
+				innerstone.classList.add("innerstone");
 
 				stone.classList.add("stone");
 				stone.classList.add("animate");
@@ -54,6 +57,7 @@ Spa.Reversi = (function () {
 						
 				}
 
+				stone.appendChild(innerstone);
 				tr.appendChild(td);
 				td.appendChild(stone);
 				CurrentGrid[row][col] = initItemState(stone, state);
